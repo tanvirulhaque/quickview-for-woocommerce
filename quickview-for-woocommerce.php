@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
  * Plugin Name: Quickview for WooCommerce
  * Plugin URI: https://wordpress.org/
@@ -17,70 +17,58 @@
 defined( 'ABSPATH' ) or die( 'Keep Silent' );
 
 
-// Add Quickview button
-add_action( 'woocommerce_after_shop_loop_item', function() {
-	global $product;
+// Add button on shop archive product
+add_action( 'woocommerce_after_shop_loop_item', function () {
+    global $product;
 
-	$html = '
-	<button class="button" id="wc-quickview-button" data-product_id="'.$product->get_id().'">Quickview</button>
+    $html = '';
 
-	<script>
-	jQuery(document).ready( function() {
-	   jQuery("#wc-quickview-button").on( "click", function(e) {
-	      e.preventDefault(); 
+    if ( $product ) {
+        $product_id = $product->get_id();
+        $html       = '<span class="button quick-view-button" id="quick-view-button" data-product_id="' . $product_id . '">Quick View</span>';
+    }
 
-	      var product_id = jQuery(this).attr("data-product_id");
-
-	      
-
-	      jQuery.ajax({
-	         type: "post",
-	         dataType: "json",
-	         url: "'.admin_url('admin-ajax.php').'",
-	         data: {
-	            action: "wc_get_quickview_data", 
-	            product_id : product_id 
-	         },
-
-	         success: function(response) {
-	            if(response.type == "success") {
-	               // jQuery("#like_counter").html(response.like_count);
-	               console.log(product_id);
-	            }
-	            else {
-	               alert("Your like could not be added");
-	            }
-	         }
-
-	      });
-
-	   });
-	});
-	</script>
-	';
-
-	echo $html;
+    echo $html;
 }, 11 );
 
 
-// Ajax Function
-function wc_quickview_ajax_handler() {
-	$product_id = $_POST['product_id'];
-	$p = get_product($product_id);
-	echo "Hello";
-	wp_die();
+// Ajax Call Function
+function woo_get_quickview_data() {
+    $product_id = $_POST['product_id'];
+    $get_product_data = wc_get_product( $product_id );
+
+    echo $get_product_data;
+
+    $query = new WP_Query( array(
+        'p'         => $product_id,
+        'post_type' => array( 'product' )
+    ) );
+
+    if ( $query->have_posts() ) {
+        while ( $query->have_posts() ) {
+            $query->the_post();
+
+//            require_once( plugin_dir_path( __FILE__ ) . 'includes/quickview-template.php' );
+        }
+
+
+
+    }
+
+    wp_reset_postdata();
+    wp_die();
 }
-add_action( 'wp_ajax_wc_get_quickview_data', 'wc_quickview_ajax_handler' );
-add_action( 'wp_ajax_nopriv_wc_get_quickview_data', 'wc_quickview_ajax_handler' );
+
+add_action( 'wp_ajax_woo_get_quickview_data', 'woo_get_quickview_data' );
+add_action( 'wp_ajax_nopriv_woo_get_quickview_data', 'woo_get_quickview_data' );
 
 
 // Enqueue Scripts
-// add_action( 'wp_enqueue_scripts', function() {
+add_action( 'wp_enqueue_scripts', function () {
 
-// 	wp_register_script( 'quickview-for-woocommerce', plugin_dir_url(__file__).'assets/js/quickview-for-woocommerce.js', array('jquery') );
-// 	wp_localize_script( 'quickview-for-woocommerce-ajax', 'quickviewAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
+    wp_register_script( 'quickview-for-woocommerce', plugin_dir_url( __file__ ) . 'assets/js/quickview-for-woocommerce.js', array( 'jquery' ) );
+    wp_localize_script( 'quickview-for-woocommerce', 'quickviewAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
 
-// 	wp_enqueue_script( 'quickview-for-woocommerce' );
-// 	wp_enqueue_script( 'jquery' );
+    wp_enqueue_script( 'quickview-for-woocommerce' );
 
-// });
+} );

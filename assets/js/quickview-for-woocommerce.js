@@ -1,29 +1,27 @@
-jQuery(document).ready( function() {
-   jQuery('#wc-quickview-button').on( 'click', function(e) {
-      e.preventDefault(); 
+jQuery('document').ready(function (){
+    jQuery(".quick-view-button").on("click", function(e) {
+        e.preventDefault();
+        var product_id = jQuery(this).attr("data-product_id");
 
-      var product_id = jQuery(this).attr("data-product_id");
+        jQuery.ajax({
+            type: "POST",
+            dataType: "json",
+            url: quickviewAjax.ajaxurl,
+            data: {
+                action: "woo_get_quickview_data",
+                product_id : product_id
+            },
 
-      jQuery.ajax({
-         type: "post",
-         dataType: "json",
-         url: quickviewAjax.ajaxurl,
-         data: {
-            action: "wc_get_quickview_data", 
-            product_id : product_id 
-         },
+            success: function(response) {
+                console.log(response);
+                alert('Product Name: ' + response.name + ', Price: ' + response.price);
+            },
 
-         success: function(response) {
-            if(response.type == "success") {
-               // jQuery("#like_counter").html(response.like_count);
-               alert("Working");
+            error: function(response) {
+                alert('Not working')
             }
-            else {
-               alert("Your like could not be added");
-            }
-         }
 
-      });
+        });
 
-   });
+    });
 });
