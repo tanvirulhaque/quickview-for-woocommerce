@@ -48,10 +48,9 @@ function woo_get_quickview_data() {
         while ( $query->have_posts() ) {
             $query->the_post();
 
-//            require_once( plugin_dir_path( __FILE__ ) . 'includes/quickview-template.php' );
+//            require_once( plugin_dir_path( __FILE__ ) . 'templates/quickview-template.php' );
+        
         }
-
-
 
     }
 
@@ -61,6 +60,14 @@ function woo_get_quickview_data() {
 
 add_action( 'wp_ajax_woo_get_quickview_data', 'woo_get_quickview_data' );
 add_action( 'wp_ajax_nopriv_woo_get_quickview_data', 'woo_get_quickview_data' );
+
+
+add_action( 'woo_quickview_product_summary', 'woocommerce_template_single_title', 5 );
+add_action( 'woo_quickview_product_summary', 'woocommerce_template_single_rating', 10 );
+add_action( 'woo_quickview_product_summary', 'woocommerce_template_single_price', 15 );
+add_action( 'woo_quickview_product_summary', 'woocommerce_template_single_excerpt', 20 );
+add_action( 'woo_quickview_product_summary', 'woocommerce_template_single_add_to_cart', 25 );
+add_action( 'woo_quickview_product_summary', 'woocommerce_template_single_meta', 30 );
 
 
 // Enqueue Scripts
