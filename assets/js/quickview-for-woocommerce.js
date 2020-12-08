@@ -1,11 +1,11 @@
 jQuery('document').ready(function (){
     jQuery(".quick-view-button").on("click", function(e) {
         e.preventDefault();
+
         var product_id = jQuery(this).attr("data-product_id");
 
         jQuery.ajax({
             type: "POST",
-            dataType: "json",
             url: quickviewAjax.ajaxurl,
             data: {
                 action: "woo_get_quickview_data",
@@ -13,17 +13,15 @@ jQuery('document').ready(function (){
             },
 
             success: function(response) {
-                console.log(response);
-                // alert('Product Name: ' + response.name + ', Price: ' + response.price);
+                jQuery("#woo-quickview-modal").html(response);
+                jQuery.featherlight(jQuery("#woo-quickview-modal"), {});
             },
 
-            error: function(response) {
+            error: function() {
                 alert('Not working')
             }
 
         });
 
     });
-
-    jQuery('#quick-view-button').featherlight();
 });
