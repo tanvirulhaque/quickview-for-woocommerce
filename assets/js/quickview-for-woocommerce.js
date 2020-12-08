@@ -14,7 +14,7 @@ jQuery('document').ready(function (){
 
             success: function(response) {
                 console.log(response);
-                alert('Product Name: ' + response.name + ', Price: ' + response.price);
+                // alert('Product Name: ' + response.name + ', Price: ' + response.price);
             },
 
             error: function(response) {
@@ -24,4 +24,6 @@ jQuery('document').ready(function (){
         });
 
     });
+
+    jQuery('#quick-view-button').featherlight();
 });

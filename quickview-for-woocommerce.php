@@ -25,7 +25,7 @@ add_action( 'woocommerce_after_shop_loop_item', function () {
 
     if ( $product ) {
         $product_id = $product->get_id();
-        $html       = '<span class="button quick-view-button" id="quick-view-button" data-product_id="' . $product_id . '">Quick View</span>';
+        $html       = '<a href="#" class="button quick-view-button" id="quick-view-button" data-featherlight="#mylightbox" data-product_id="' . $product_id . '">Quick View</a>';
     }
 
     echo $html;
@@ -49,7 +49,7 @@ function woo_get_quickview_data() {
             $query->the_post();
 
 //            require_once( plugin_dir_path( __FILE__ ) . 'templates/quickview-template.php' );
-        
+
         }
 
     }
@@ -73,9 +73,26 @@ add_action( 'woo_quickview_product_summary', 'woocommerce_template_single_meta',
 // Enqueue Scripts
 add_action( 'wp_enqueue_scripts', function () {
 
+    wp_enqueue_style( 'featherlight', '//cdn.jsdelivr.net/npm/featherlight@1.7.14/release/featherlight.min.css' );
+
     wp_register_script( 'quickview-for-woocommerce', plugin_dir_url( __file__ ) . 'assets/js/quickview-for-woocommerce.js', array( 'jquery' ) );
     wp_localize_script( 'quickview-for-woocommerce', 'quickviewAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
 
     wp_enqueue_script( 'quickview-for-woocommerce' );
+    wp_enqueue_script( 'featherlight', '//cdn.jsdelivr.net/npm/featherlight@1.7.14/release/featherlight.min.js' );
 
 } );
+
+add_action('wp_head', function () {
+    $html = '';
+
+    $html .= '
+        <div id="mylightbox" class="lightbox featherlight-inner">
+        <h1>Hello</h1>
+        <h1>Hello</h1>
+        <h1>Hello</h1>
+        </div>
+    ';
+
+    echo $html;
+});
