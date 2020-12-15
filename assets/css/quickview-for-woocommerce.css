@@ -1,0 +1,23 @@
+.featherlight .featherlight-content {
+    max-width: 900px;
+    width: 100%;
+}
+
+.woo-quickview__main .woo-quickview__images {
+    float: left;
+    width: 48%;
+}
+
+.woo-quickview__main .woo-quickview__summary {
+    float: right;
+    width: 48%;
+}
+
+.woo-quickview__main .woocommerce-product-gallery {
+    opacity: 1 !important;
+}
+
+.woo-quickview__main .woo-quickview__images .woocommerce-product-gallery.images {
+    width: 100% !important;
+    margin-bottom: 0;
+}

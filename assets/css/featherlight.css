@@ -56,13 +56,13 @@ html.with-featherlight {
 
 	/* dimensions: cut off images */
 	overflow: auto;
-	padding: 25px 25px 0;
-	border-bottom: 25px solid transparent;
+	padding: 20px 20px 0;
+	border-bottom: 20px solid transparent;
 
 	/* dimensions: handling large content */
 	margin-left: 5%;
 	margin-right: 5%;
-	max-height: 95%;
+	max-height: 80%;
 
 	/* styling */
 	background: #fff;

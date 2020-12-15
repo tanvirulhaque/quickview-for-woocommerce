@@ -4,6 +4,8 @@ jQuery('document').ready(function (){
 
         var product_id = jQuery(this).attr("data-product_id");
 
+        jQuery("#woo-quickview-modal").css('display', 'block');
+
         jQuery.ajax({
             type: "POST",
             url: quickviewAjax.ajaxurl,
@@ -15,6 +17,7 @@ jQuery('document').ready(function (){
             success: function(response) {
                 jQuery("#woo-quickview-modal").html(response);
                 jQuery.featherlight(jQuery("#woo-quickview-modal"), {});
+                jQuery("#woo-quickview-modal").css('display', 'none');
             },
 
             error: function() {
@@ -24,4 +27,5 @@ jQuery('document').ready(function (){
         });
 
     });
+
 });
