@@ -15,9 +15,18 @@ jQuery('document').ready(function (){
             },
 
             success: function(response) {
+
                 jQuery("#woo-quickview-modal").html(response);
                 jQuery.featherlight(jQuery("#woo-quickview-modal"), {});
+
+                var form_variation = jQuery(".woo-quickview__container").find(".variations_form");
+                
+                form_variation.each(function() {
+                    jQuery(this).wc_variation_form();
+                });
+
                 jQuery("#woo-quickview-modal").css('display', 'none');
+                
             },
 
             error: function() {

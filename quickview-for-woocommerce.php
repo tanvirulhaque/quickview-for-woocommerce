@@ -68,16 +68,6 @@ add_action( 'wp_ajax_woo_get_quickview_data', 'woo_get_quickview_data' );
 add_action( 'wp_ajax_nopriv_woo_get_quickview_data', 'woo_get_quickview_data' );
 
 
-
-function woo_qv_lightbox() {
-    global $woocommerce;
-    wp_enqueue_script( 'wc-add-to-cart-variation' ); //Variable product Script
-
-    wp_enqueue_script( 'prettyPhoto', $woocommerce->plugin_url() . '/assets/js/prettyPhoto/jquery.prettyPhoto.min.js', array( 'jquery' ), '1.7', true );
-    wp_enqueue_style( 'woocommerce_prettyPhoto_css', $woocommerce->plugin_url() . '/assets/css/prettyPhoto.css' );
-}
-add_action( 'wp_footer', 'woo_qv_lightbox' );
-
 // Add quick view content
 add_action( 'woo_quickview_product_images', 'woocommerce_show_product_sale_flash', 10 );
 add_action( 'woo_quickview_product_images', 'woocommerce_show_product_images', 20 );
@@ -95,8 +85,10 @@ add_action( 'wp_enqueue_scripts', function () {
     wp_enqueue_style( 'featherlight', plugin_dir_url( __file__ ) . 'assets/css/featherlight.css', array(), '1.7.13' );
     wp_enqueue_style( 'quickview-for-woocommerce', plugin_dir_url( __file__ ) . 'assets/css/quickview-for-woocommerce.css', array(), '1.0.0' );
 
-    wp_enqueue_script( 'quickview-for-woocommerce', plugin_dir_url( __file__ ) . 'assets/js/quickview-for-woocommerce.js', array( 'jquery' ) );
+    wp_enqueue_script( 'wc-add-to-cart-variation' );
+    wp_enqueue_script( 'featherlight', plugin_dir_url( __file__ ) . 'assets/js/featherlight.js', array( 'jquery' ), '1.7.13', true );
+    wp_enqueue_script( 'quickview-for-woocommerce', plugin_dir_url( __file__ ) . 'assets/js/quickview-for-woocommerce.js', array( 'jquery', 'wc-add-to-cart-variation' ), true );
     wp_localize_script( 'quickview-for-woocommerce', 'quickviewAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
-    wp_enqueue_script( 'featherlight', plugin_dir_url( __file__ ) . 'assets/js/featherlight.js', array( 'jquery' ), '1.7.13' );
+
 
 } );
