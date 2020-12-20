@@ -21,3 +21,8 @@
     width: 100% !important;
     margin-bottom: 0;
 }
+
+/* Woo variation gallery plugin width Fix */
+.woo-quickview__images .woo-variation-product-gallery {
+    max-width: 100% !important;
+}
