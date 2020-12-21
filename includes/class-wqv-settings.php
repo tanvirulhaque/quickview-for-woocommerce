@@ -58,7 +58,8 @@ if ( ! class_exists( 'WQV_Settings' ) ):
                         'name'  => 'enable_quick_view',
                         'label' => __( 'Enable Quick View', 'quickview-for-woocommerce' ),
                         'desc'  => __( 'Show quick view button on archive / shop page.', 'quickview-for-woocommerce' ),
-                        'type'  => 'checkbox'
+                        'type'  => 'checkbox',
+                        'default' => 'on',
                     ),
                     array(
                         'name'              => 'quick_view_btn_text',
@@ -70,14 +71,14 @@ if ( ! class_exists( 'WQV_Settings' ) ):
                         'sanitize_callback' => 'sanitize_text_field'
                     ),
                     array(
-                        'name'    => 'selectbox',
+                        'name'    => 'quick_view_btn_position',
                         'label'   => __( 'Quick View Button Position', 'quickview-for-woocommerce' ),
                         'desc'    => __( 'Select quick view button position.', 'quickview-for-woocommerce' ),
                         'type'    => 'select',
-                        'default' => 'after-add-to-cart',
+                        'default' => 'after_add_to_cart',
                         'options' => array(
-                            'before-add-to-cart' => 'Before Add to Cart button',
-                            'after-add-to-cart'  => 'After Add to Cart button'
+                            'before_add_to_cart' => 'Before Add to Cart button',
+                            'after_add_to_cart'  => 'After Add to Cart button'
                         )
                     ),
                 ),
