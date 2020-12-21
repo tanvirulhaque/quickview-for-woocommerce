@@ -49,6 +49,12 @@ if ( ! class_exists( 'Woo_Quickview_For_WooCommerce' ) ) {
          * @since 1.0.0
          */
         public function __construct() {
+            // Define constants
+            $this->define_constants();
+
+            // Include required files
+            $this->includes();
+
             // Initialize the action hooks
             $this->init_hooks();
         }
@@ -71,6 +77,30 @@ if ( ! class_exists( 'Woo_Quickview_For_WooCommerce' ) ) {
             return self::$instance;
         }
 
+        /**
+         * Define constants
+         */
+        private function define_constants() {
+            define( 'WQV_VERSION', $this->version );
+            define( 'WQV_FILE', __FILE__ );
+            define( 'WQV_DIR_PATH', plugin_dir_path( WQV_FILE ) );
+            define( 'WQV_DIR_URI', plugin_dir_url( WQV_FILE ) );
+            define( 'WQV_ADMIN', WQV_DIR_PATH . 'admin' );
+            define( 'WQV_INCLUDES', WQV_DIR_URI . 'includes' );
+            define( 'WQV_ASSETS', WQV_DIR_URI . 'assets' );
+        }
+
+
+        /**
+         * Include required files
+         */
+        private function includes() {
+            if ( is_admin() ) {
+                require_once plugin_dir_path( __FILE__ ) . '/includes/class-wqv-settings-api.php';
+                require_once plugin_dir_path( __FILE__ ) . '/includes/class-wqv-settings.php';
+            }
+        }
+
 
         /**
          * Init Hooks
@@ -89,6 +119,8 @@ if ( ! class_exists( 'Woo_Quickview_For_WooCommerce' ) ) {
             add_action( 'wp_footer', array( $this, 'add_quickview_popup_markup' ) );
             add_action( 'wp_ajax_woo_get_quickview_data', array( $this, 'get_quickview_data' ) );
             add_action( 'wp_ajax_nopriv_woo_get_quickview_data', array( $this, 'get_quickview_data' ) );
+
+            add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'plugin_settings_links' ) );
 
             // Add quick view content
             add_action( 'woo_quickview_product_images', 'woocommerce_show_product_sale_flash', 10 );
@@ -113,8 +145,25 @@ if ( ! class_exists( 'Woo_Quickview_For_WooCommerce' ) ) {
             load_plugin_textdomain( 'quickview-for-woocommerce', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
         }
 
+        /**
+         * Plugin action links
+         *
+         * @param array $links
+         *
+         * @return array
+         */
+        public function plugin_settings_links( $links ) {
 
-        // Enqueue Scripts
+            $links[] = '<a href="' . admin_url( 'admin.php?page=' ) . 'woo-quick-view">' . __( 'Settings', 'quickview-for-woocommerce' ) . '</a>';
+
+            return $links;
+
+        }
+
+
+        /**
+         * Enqueue Scripts
+         */
         public function enqueue_scripts() {
             wp_enqueue_style( 'featherlight', plugin_dir_url( __file__ ) . 'assets/css/featherlight.css', array(), '1.7.13' );
             wp_enqueue_style( 'quickview-for-woocommerce', plugin_dir_url( __file__ ) . 'assets/css/quickview-for-woocommerce.css', array(), '1.0.0' );
